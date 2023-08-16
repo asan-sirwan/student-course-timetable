@@ -4,6 +4,7 @@ namespace student_course_timetable.Services.LecturerService
 {
     public interface ILecturerService
     {
-        Task<List<LecturerDTO>> GetLecturers(bool detailed);
+        Task<ServiceResponse<List<LecturerDTO>>> GetLecturers(bool detailed);
+		Task<ServiceResponse<LecturerDTO>> GetLecturerById(int id, bool detailed);
     }
 }

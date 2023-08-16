@@ -16,9 +16,18 @@ namespace student_course_timetable.Repositories.LecturerRepo
 		public async Task<List<Lecturer>> GetLecturers()
 		{
 			List<Lecturer> lecturers = await context.Lecturers
-			.Include(l => l.Courses)
-			.ToListAsync();
+				.Include(l => l.Courses)
+				.ToListAsync();
 			return lecturers;
+		}
+
+		public async Task<Lecturer?> GetLecturerById(int lecturerId)
+		{
+			Lecturer? lecturer = await context.Lecturers
+				.Where(l => l.LecturerId == lecturerId)
+				.Include(l => l.Courses)
+				.FirstOrDefaultAsync();
+			return lecturer;
 		}
 	}
 }

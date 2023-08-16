@@ -5,5 +5,6 @@ namespace student_course_timetable.Repositories.LecturerRepo
     public interface ILecturerRepository
     {
         Task<List<Lecturer>> GetLecturers();
+        Task<Lecturer?> GetLecturerById(int lecturerId);
     }
 }

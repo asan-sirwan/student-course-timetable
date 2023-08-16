@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
-using student_course_timetable.Models;
+using student_course_timetable.DTOs.LecturerDTOs;
+using student_course_timetable.DTOs.StudentDTOs;
 
 namespace student_course_timetable.DTOs.CourseDTOs
 {
@@ -11,9 +12,9 @@ namespace student_course_timetable.DTOs.CourseDTOs
         public required DateTime CourseDateTime { get; set; }
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public Lecturer? Lecturer { get; set; }
+		public LecturerDTO? Lecturer { get; set; }
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public List<Student>? Students { get; set; }
+		public List<StudentDTO>? Students { get; set; }
     }
 }

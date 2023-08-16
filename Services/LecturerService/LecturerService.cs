@@ -14,11 +14,32 @@ namespace student_course_timetable.Services.LecturerService
 			this.lecturerRepository = lecturerRepository;
 		}
 
-		public async Task<List<LecturerDTO>> GetLecturers(bool detailed)
+		public async Task<ServiceResponse<List<LecturerDTO>>> GetLecturers(bool detailed)
 		{
 			List<Lecturer> lecturers = await lecturerRepository.GetLecturers();
 
-			List<LecturerDTO> lecturerDTOs = lecturers.Select(lecturer => new LecturerDTO
+			List<LecturerDTO> lecturerDTOs = lecturers.Select(lecturer => GetLecturerDTO(lecturer, detailed)).ToList();
+
+			return ServiceResponse<List<LecturerDTO>>.Success(lecturerDTOs, 200);
+		}
+
+		public async Task<ServiceResponse<LecturerDTO>> GetLecturerById(int id, bool detailed)
+		{
+			Lecturer? lecturer = await lecturerRepository.GetLecturerById(id);
+			if (lecturer == null)
+			{
+				return ServiceResponse<LecturerDTO>
+					.Fail($"Lecturer with id {id} wasn't found.", 404);
+			}
+
+			LecturerDTO lecturerDTO = GetLecturerDTO(lecturer, detailed);
+
+			return ServiceResponse<LecturerDTO>.Success(lecturerDTO, 200);
+		}
+
+		private static LecturerDTO GetLecturerDTO(Lecturer lecturer, bool detailed)
+		{
+			return new LecturerDTO
 			{
 				LecturerId = lecturer.LecturerId,
 				Name = lecturer.Name,
@@ -32,9 +53,7 @@ namespace student_course_timetable.Services.LecturerService
 					Description = course.Description,
 					CourseDateTime = course.CourseDateTime
 				}).ToList() : null
-			}).ToList();
-
-			return lecturerDTOs;
+			};
 		}
 	}
 }

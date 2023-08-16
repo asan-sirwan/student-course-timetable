@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using student_course_timetable.DTOs.LecturerDTOs;
+using student_course_timetable.Services;
 using student_course_timetable.Services.LecturerService;
 
 namespace student_course_timetable.Controllers
@@ -16,10 +17,23 @@ namespace student_course_timetable.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<LecturerDTO>>> GetLecturers([FromQuery] bool detailed = false)
+		public async Task<ActionResult<ServiceResponse<List<LecturerDTO>>>> GetLecturers([FromQuery] bool detailed = false)
 		{
-			List<LecturerDTO> lecturers = await lecturerService.GetLecturers(detailed);
-			return Ok(lecturers);
+			ServiceResponse<List<LecturerDTO>> lecturers = await lecturerService.GetLecturers(detailed);
+			if (!lecturers.IsSuccess)
+			{ return StatusCode(lecturers.StatusCode, lecturers); }
+
+			return Ok(lecturers.Data);
+		}
+
+		[HttpGet("{id}")]
+		public async Task<ActionResult<ServiceResponse<LecturerDTO>>> GetLecturerById(int id, [FromQuery] bool detailed = false)
+		{
+			ServiceResponse<LecturerDTO> lecturer = await lecturerService.GetLecturerById(id, detailed);
+			if (!lecturer.IsSuccess)
+			{ return StatusCode(lecturer.StatusCode, lecturer); }
+
+			return Ok(lecturer.Data);
 		}
 	}
 }
