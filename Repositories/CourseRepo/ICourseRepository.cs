@@ -6,5 +6,6 @@ namespace student_course_timetable.Repositories.CourseRepo
     {
         Task<List<Course>> GetCourses();
 		Task<Course?> GetCourseById(int courseId);
+		Task<bool> AddCourse(Course course);
     }
 }

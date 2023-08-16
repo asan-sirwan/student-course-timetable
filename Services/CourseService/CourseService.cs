@@ -3,16 +3,19 @@ using student_course_timetable.DTOs.LecturerDTOs;
 using student_course_timetable.DTOs.StudentDTOs;
 using student_course_timetable.Models;
 using student_course_timetable.Repositories.CourseRepo;
+using student_course_timetable.Repositories.LecturerRepo;
 
 namespace student_course_timetable.Services.CourseService
 {
 	public class CourseService : ICourseService
 	{
 		private readonly ICourseRepository courseRepository;
+		private readonly ILecturerRepository lecturerRepository;
 
-		public CourseService(ICourseRepository courseRepository)
+		public CourseService(ICourseRepository courseRepository, ILecturerRepository lecturerRepository)
 		{
 			this.courseRepository = courseRepository;
+			this.lecturerRepository = lecturerRepository;
 		}
 
 		public async Task<ServiceResponse<List<CourseDTO>>> GetCourses(bool detailed)
@@ -38,7 +41,34 @@ namespace student_course_timetable.Services.CourseService
 			return ServiceResponse<CourseDTO>.Success(courseDTO, 200);
 		}
 
-		private static CourseDTO GetCourseDTO(Course course, bool detailed)
+		public async Task<ServiceResponse<CourseDTO>> AddCourse(CourseCreateDTO courseCreateDTO)
+		{
+			Lecturer? courseLecturer = await lecturerRepository.GetLecturerById(courseCreateDTO.LecturerId);
+			if (courseLecturer == null)
+			{
+				return ServiceResponse<CourseDTO>
+					.Fail($"Lecturer with id {courseCreateDTO.LecturerId} wasn't found.", 404);
+			}
+
+			Course newCourse = new()
+			{
+				Title = courseCreateDTO.Title,
+				Description = courseCreateDTO.Description,
+				CourseDateTime = courseCreateDTO.CourseDateTime,
+				Lecturer = courseLecturer
+			};
+
+			bool saved = await courseRepository.AddCourse(newCourse);
+			if (!saved)
+			{
+				return ServiceResponse<CourseDTO>
+		   			.Fail("Failed to add new course.", 500);
+			}
+
+			return ServiceResponse<CourseDTO>.Success(GetCourseDTO(newCourse), 201);
+		}
+
+		private static CourseDTO GetCourseDTO(Course course, bool detailed = false)
 		{
 			return new CourseDTO
 			{

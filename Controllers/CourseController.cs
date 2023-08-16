@@ -35,5 +35,15 @@ namespace student_course_timetable.Controllers
 
 			return Ok(course.Data);
 		}
+
+		[HttpPost]
+		public async Task<ActionResult<ServiceResponse<CourseDTO>>> AddCourse([FromBody] CourseCreateDTO newCourse)
+		{
+			ServiceResponse<CourseDTO> course = await courseService.AddCourse(newCourse);
+			if (!course.IsSuccess)
+			{ return StatusCode(course.StatusCode, course); }
+
+			return CreatedAtAction(nameof(GetCourseById), new { id = course.Data!.CourseId }, course.Data);
+		}
 	}
 }

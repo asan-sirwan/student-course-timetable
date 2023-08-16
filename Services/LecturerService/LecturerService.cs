@@ -37,7 +37,28 @@ namespace student_course_timetable.Services.LecturerService
 			return ServiceResponse<LecturerDTO>.Success(lecturerDTO, 200);
 		}
 
-		private static LecturerDTO GetLecturerDTO(Lecturer lecturer, bool detailed)
+		public async Task<ServiceResponse<LecturerDTO>> AddLecturer(LecturerCreateDTO lecturerCreateDTO)
+		{
+			Lecturer newLecturer = new()
+			{
+				Name = lecturerCreateDTO.Name,
+				Email = lecturerCreateDTO.Email,
+				Password = lecturerCreateDTO.Password,
+				BirthDate = lecturerCreateDTO.BirthDate,
+				Degree = lecturerCreateDTO.Degree,
+			};
+
+			bool saved = await lecturerRepository.AddLecturer(newLecturer);
+			if (!saved)
+			{
+				return ServiceResponse<LecturerDTO>
+		   			.Fail("Failed to add new lecturer.", 500);
+			}
+
+			return ServiceResponse<LecturerDTO>.Success(GetLecturerDTO(newLecturer), 201);
+		}
+
+		private static LecturerDTO GetLecturerDTO(Lecturer lecturer, bool detailed = false)
 		{
 			return new LecturerDTO
 			{

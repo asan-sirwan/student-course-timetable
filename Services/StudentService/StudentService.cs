@@ -37,7 +37,28 @@ namespace student_course_timetable.Services.StudentService
 			return ServiceResponse<StudentDTO>.Success(studentDTO, 200);
 		}
 
-		private static StudentDTO GetStudentDTO(Student student, bool detailed)
+		public async Task<ServiceResponse<StudentDTO>> AddStudent(StudentCreateDTO studentCreateDTO)
+		{
+			Student newStudent = new()
+			{
+				Name = studentCreateDTO.Name,
+				Email = studentCreateDTO.Email,
+				Password = studentCreateDTO.Password,
+				BirthDate = studentCreateDTO.BirthDate,
+				Address = studentCreateDTO.Address
+			};
+
+			bool saved = await studentRepository.AddStudent(newStudent);
+			if (!saved)
+			{
+				return ServiceResponse<StudentDTO>
+		   			.Fail("Failed to add new student.", 500);
+			}
+
+			return ServiceResponse<StudentDTO>.Success(GetStudentDTO(newStudent), 200);
+		}
+
+		private static StudentDTO GetStudentDTO(Student student, bool detailed = false)
 		{
 			return new StudentDTO
 			{

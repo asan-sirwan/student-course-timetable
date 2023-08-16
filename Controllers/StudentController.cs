@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using student_course_timetable.DTOs.StudentDTOs;
+using student_course_timetable.Models;
 using student_course_timetable.Services;
 using student_course_timetable.Services.StudentService;
 
@@ -34,6 +35,16 @@ namespace student_course_timetable.Controllers
 			{ return StatusCode(student.StatusCode, student); }
 
 			return Ok(student.Data);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult<ServiceResponse<StudentDTO>>> AddStudent([FromBody] StudentCreateDTO newStudent)
+		{
+			ServiceResponse<StudentDTO> student = await studentService.AddStudent(newStudent);
+			if (!student.IsSuccess)
+			{ return StatusCode(student.StatusCode, student); }
+
+			return CreatedAtAction(nameof(GetStudentById), new { id = student.Data!.StudentId }, student.Data);
 		}
 	}
 }

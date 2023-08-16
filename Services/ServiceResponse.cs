@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 
 namespace student_course_timetable.Services
 {
-    public class ServiceResponse<T>
-    {
+	public class ServiceResponse<T>
+	{
 		[JsonIgnore]
-        public T? Data { get; }
+		public T? Data { get; }
 
 		[JsonIgnore]
 		public bool IsSuccess { get; }
@@ -15,7 +15,7 @@ namespace student_course_timetable.Services
 		[JsonIgnore]
 		public int StatusCode { get; }
 
-		private ServiceResponse(bool isSuccess, T? data, string? error, int statusCode)
+		private ServiceResponse(bool isSuccess,	T? data, string? error, int statusCode)
 		{
 			IsSuccess = isSuccess;
 			Data = data;
@@ -25,5 +25,5 @@ namespace student_course_timetable.Services
 
 		public static ServiceResponse<T> Success(T data, int statusCode) => new(true, data, null, statusCode);
 		public static ServiceResponse<T> Fail(string error, int statusCode) => new(false, default, error, statusCode);
-    }
+	}
 }

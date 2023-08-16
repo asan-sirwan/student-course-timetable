@@ -31,5 +31,13 @@ namespace student_course_timetable.Repositories.StudentRepo
 				.FirstOrDefaultAsync();
 			return student;
 		}
+
+		public async Task<bool> AddStudent(Student student)
+		{
+			context.Students.Add(student);
+			int saved = await context.SaveChangesAsync();
+
+			return saved > 0;
+		}
 	}
 }

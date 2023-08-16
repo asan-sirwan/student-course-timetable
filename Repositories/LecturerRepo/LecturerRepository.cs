@@ -29,5 +29,13 @@ namespace student_course_timetable.Repositories.LecturerRepo
 				.FirstOrDefaultAsync();
 			return lecturer;
 		}
+
+		public async Task<bool> AddLecturer(Lecturer lecturer)
+		{
+			context.Lecturers.Add(lecturer);
+			int saved = await context.SaveChangesAsync();
+
+			return saved > 0;
+		}
 	}
 }

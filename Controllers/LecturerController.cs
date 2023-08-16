@@ -35,5 +35,15 @@ namespace student_course_timetable.Controllers
 
 			return Ok(lecturer.Data);
 		}
+
+		[HttpPost]
+		public async Task<ActionResult<ServiceResponse<LecturerDTO>>> AddLecturer([FromBody] LecturerCreateDTO newLecturer)
+		{
+			ServiceResponse<LecturerDTO> lecturer = await lecturerService.AddLecturer(newLecturer);
+			if (!lecturer.IsSuccess)
+			{ return StatusCode(lecturer.StatusCode, lecturer); }
+
+			return CreatedAtAction(nameof(GetLecturerById), new { id = lecturer.Data!.LecturerId }, lecturer.Data);
+		}
 	}
 }
