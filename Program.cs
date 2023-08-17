@@ -14,6 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "AllowReactApp", policy =>
+	{
+		policy.WithOrigins("http://localhost:5173");
+	});
+});
+
 builder.Services.AddControllers();
 builder.Services.AddControllers()
 	.AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -46,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowReactApp");
 
 app.UseAuthorization();
 
