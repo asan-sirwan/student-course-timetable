@@ -68,6 +68,61 @@ namespace student_course_timetable.Services.CourseService
 			return ServiceResponse<CourseDTO>.Success(GetCourseDTO(newCourse), 201);
 		}
 
+		public async Task<ServiceResponse<CourseDTO>> UpdateCourse(CourseUpdateDTO courseUpdateDTO)
+		{
+			try
+			{
+			Lecturer? courseLecturer = await lecturerRepository.GetLecturerById(courseUpdateDTO.LecturerId);
+			if (courseLecturer == null)
+			{
+				return ServiceResponse<CourseDTO>
+					.Fail($"Lecturer with id {courseUpdateDTO.LecturerId} wasn't found.", 404);
+			}
+
+			Course updateCourse = new()
+			{
+				CourseId = courseUpdateDTO.CourseId,
+				Title = courseUpdateDTO.Title,
+				Description = courseUpdateDTO.Description,
+				CourseDateTime = courseUpdateDTO.CourseDateTime,
+				Lecturer = courseLecturer
+			};
+
+			bool updated = await courseRepository.UpdateCourse(updateCourse);
+			if (!updated)
+			{
+				return ServiceResponse<CourseDTO>
+					   .Fail("Failed to update course.", 500);
+			}
+
+			return ServiceResponse<CourseDTO>.Success(GetCourseDTO(updateCourse), 200);
+			}
+			catch (Exception)
+			{
+				return ServiceResponse<CourseDTO>
+					.Fail("Failed to update course.", 304);
+			}
+		}
+
+		public async Task<ServiceResponse<CourseDTO>> DeleteCourse(int id)
+		{
+			Course? course = await courseRepository.GetCourseById(id);
+			if (course == null)
+			{
+				return ServiceResponse<CourseDTO>
+					.Fail($"Course with id {id} wasn't found.", 404);
+			}
+
+			bool removed = await courseRepository.DeleteCourse(course);
+			if (!removed)
+			{
+				return ServiceResponse<CourseDTO>
+					.Fail("Failed to remove course.", 500);
+			}
+
+			return ServiceResponse<CourseDTO>.Success(GetCourseDTO(course), 200);
+		}
+
 		private static CourseDTO GetCourseDTO(Course course, bool detailed = false)
 		{
 			return new CourseDTO

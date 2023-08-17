@@ -37,5 +37,21 @@ namespace student_course_timetable.Repositories.LecturerRepo
 
 			return saved > 0;
 		}
+
+		public async Task<bool> UpdateLecturer(Lecturer lecturer)
+		{
+			context.Lecturers.Update(lecturer);
+			int updated = await context.SaveChangesAsync();
+
+			return updated > 0;
+		}
+
+		public async Task<bool> DeleteLecturer(Lecturer lecturer)
+		{
+			context.Lecturers.Remove(lecturer);
+			int removed = await context.SaveChangesAsync();
+
+			return removed > 0;
+		}
 	}
 }
