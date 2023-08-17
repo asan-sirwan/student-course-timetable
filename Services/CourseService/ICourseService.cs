@@ -7,5 +7,7 @@ namespace student_course_timetable.Services.CourseService
         Task<ServiceResponse<List<CourseDTO>>> GetCourses(bool detailed);
 		Task<ServiceResponse<CourseDTO>> GetCourseById(int id, bool detailed);
 		Task<ServiceResponse<CourseDTO>> AddCourse(CourseCreateDTO courseCreateDTO);
+		Task<ServiceResponse<CourseDTO>> UpdateCourse(CourseUpdateDTO courseUpdateDTO);
+		Task<ServiceResponse<CourseDTO>> DeleteCourse(int id);
     }
 }

@@ -7,5 +7,7 @@ namespace student_course_timetable.Services.LecturerService
         Task<ServiceResponse<List<LecturerDTO>>> GetLecturers(bool detailed);
 		Task<ServiceResponse<LecturerDTO>> GetLecturerById(int id, bool detailed);
 		Task<ServiceResponse<LecturerDTO>> AddLecturer(LecturerCreateDTO lecturerCreateDTO);
+		Task<ServiceResponse<LecturerDTO>> UpdateLecturer(LecturerUpdateDTO lecturerUpdateDTO);
+		Task<ServiceResponse<LecturerDTO>> DeleteLecturer(int id);
     }
 }

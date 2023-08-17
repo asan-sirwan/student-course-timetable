@@ -39,5 +39,21 @@ namespace student_course_timetable.Repositories.StudentRepo
 
 			return saved > 0;
 		}
+
+		public async Task<bool> UpdateStudent(Student student)
+		{
+			context.Students.Update(student);
+			int updated = await context.SaveChangesAsync();
+
+			return updated > 0;
+		}
+
+		public async Task<bool> DeleteStudent(Student student)
+		{
+			context.Students.Remove(student);
+			int removed = await context.SaveChangesAsync();
+
+			return removed > 0;
+		}
 	}
 }

@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using student_course_timetable.Data;
+using student_course_timetable.Repositories.AssignRepo;
 using student_course_timetable.Repositories.CourseRepo;
 using student_course_timetable.Repositories.LecturerRepo;
 using student_course_timetable.Repositories.StudentRepo;
+using student_course_timetable.Services.AssignService;
 using student_course_timetable.Services.CourseService;
 using student_course_timetable.Services.LecturerService;
 using student_course_timetable.Services.StudentService;
@@ -18,10 +20,12 @@ builder.Services.AddControllers()
 builder.Services.AddScoped<ILecturerRepository, LecturerRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IAssignRepository, AssignRepository>();
 
 builder.Services.AddScoped<ILecturerService, LecturerService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IAssignService, AssignService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

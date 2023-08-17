@@ -39,11 +39,70 @@ namespace student_course_timetable.Controllers
 		[HttpPost]
 		public async Task<ActionResult<ServiceResponse<CourseDTO>>> AddCourse([FromBody] CourseCreateDTO newCourse)
 		{
-			ServiceResponse<CourseDTO> course = await courseService.AddCourse(newCourse);
-			if (!course.IsSuccess)
-			{ return StatusCode(course.StatusCode, course); }
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					BadRequest(ServiceResponse<CourseDTO>.Fail("Bad input", 400));
+				}
 
-			return CreatedAtAction(nameof(GetCourseById), new { id = course.Data!.CourseId }, course.Data);
+				ServiceResponse<CourseDTO> course = await courseService.AddCourse(newCourse);
+				if (!course.IsSuccess)
+				{ return StatusCode(course.StatusCode, course); }
+
+				return CreatedAtAction(nameof(GetCourseById), new { id = course.Data!.CourseId }, course.Data);
+			}
+			catch (Exception)
+			{
+				var error = ServiceResponse<CourseDTO>.Fail("Something went wrong :(", 500);
+				return StatusCode(error.StatusCode, error);
+			}
+		}
+
+		[HttpPut]
+		public async Task<ActionResult<ServiceResponse<CourseDTO>>> UpdateCourse([FromBody] CourseUpdateDTO updateCourse)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					BadRequest(ServiceResponse<CourseDTO>.Fail("Bad input", 400));
+				}
+
+				ServiceResponse<CourseDTO> course = await courseService.UpdateCourse(updateCourse);
+				if (!course.IsSuccess)
+				{ return StatusCode(course.StatusCode, course); }
+
+				return Ok(course.Data);
+			}
+			catch (Exception)
+			{
+				var error = ServiceResponse<CourseDTO>.Fail("Something went wrong :(", 500);
+				return StatusCode(error.StatusCode, error);
+			}
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<ServiceResponse<CourseDTO>>> DeleteCourse(int id)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					BadRequest(ServiceResponse<CourseDTO>.Fail("Bad input", 400));
+				}
+
+				ServiceResponse<CourseDTO> course = await courseService.DeleteCourse(id);
+				if (!course.IsSuccess)
+				{ return StatusCode(course.StatusCode, course); }
+
+				return Ok(course.Data);
+			}
+			catch (Exception)
+			{
+				var error = ServiceResponse<CourseDTO>.Fail("Something went wrong :(", 500);
+				return StatusCode(error.StatusCode, error);
+			}
 		}
 	}
 }
