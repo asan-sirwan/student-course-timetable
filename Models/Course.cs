@@ -5,7 +5,7 @@ namespace student_course_timetable.Models
     public class Course
     {
 		[Key]
-        public int CourseId { get; set; }
+        public int Id { get; set; }
 
 		[Required]
 		[MaxLength(50)]

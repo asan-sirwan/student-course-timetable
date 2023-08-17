@@ -24,7 +24,7 @@ namespace student_course_timetable.Repositories.LecturerRepo
 		public async Task<Lecturer?> GetLecturerById(int lecturerId)
 		{
 			Lecturer? lecturer = await context.Lecturers
-				.Where(l => l.LecturerId == lecturerId)
+				.Where(l => l.Id == lecturerId)
 				.Include(l => l.Courses)
 				.FirstOrDefaultAsync();
 			return lecturer;

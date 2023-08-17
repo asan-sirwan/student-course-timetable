@@ -64,7 +64,7 @@ namespace student_course_timetable.Services.StudentService
 			{
 				Student updateStudent = new()
 				{
-					StudentId = studentUpdateDTO.StudentId,
+					Id = studentUpdateDTO.Id,
 					Name = studentUpdateDTO.Name,
 					Email = studentUpdateDTO.Email,
 					Password = studentUpdateDTO.Password,
@@ -111,20 +111,20 @@ namespace student_course_timetable.Services.StudentService
 		{
 			return new StudentDTO
 			{
-				StudentId = student.StudentId,
+				Id = student.Id,
 				Name = student.Name,
 				Email = student.Email,
 				BirthDate = student.BirthDate,
 				Address = student.Address,
 				Courses = detailed ? student.Courses.Select(course => new CourseDTO
 				{
-					CourseId = course.CourseId,
+					Id = course.Id,
 					Title = course.Title,
 					Description = course.Description,
 					CourseDateTime = course.CourseDateTime,
 					Lecturer = new()
 					{
-						LecturerId = course.Lecturer.LecturerId,
+						Id = course.Lecturer.Id,
 						Name = course.Lecturer.Name,
 						Email = course.Lecturer.Email,
 						BirthDate = course.Lecturer.BirthDate,

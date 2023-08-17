@@ -60,7 +60,7 @@ namespace student_course_timetable.Controllers
 				if (!lecturer.IsSuccess)
 				{ return StatusCode(lecturer.StatusCode, lecturer); }
 
-				return CreatedAtAction(nameof(GetLecturerById), new { id = lecturer.Data!.LecturerId }, lecturer.Data);
+				return CreatedAtAction(nameof(GetLecturerById), new { id = lecturer.Data!.Id }, lecturer.Data);
 			}
 			catch (Exception)
 			{
