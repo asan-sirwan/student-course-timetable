@@ -50,7 +50,7 @@ namespace student_course_timetable.Controllers
 				if (!course.IsSuccess)
 				{ return StatusCode(course.StatusCode, course); }
 
-				return CreatedAtAction(nameof(GetCourseById), new { id = course.Data!.CourseId }, course.Data);
+				return CreatedAtAction(nameof(GetCourseById), new { id = course.Data!.Id }, course.Data);
 			}
 			catch (Exception)
 			{

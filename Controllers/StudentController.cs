@@ -56,7 +56,7 @@ namespace student_course_timetable.Controllers
 			if (!student.IsSuccess)
 			{ return StatusCode(student.StatusCode, student); }
 
-			return CreatedAtAction(nameof(GetStudentById), new { id = student.Data!.StudentId }, student.Data);
+			return CreatedAtAction(nameof(GetStudentById), new { id = student.Data!.Id }, student.Data);
 		}
 
 		[HttpPut]
