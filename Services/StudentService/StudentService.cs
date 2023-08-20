@@ -23,6 +23,16 @@ namespace student_course_timetable.Services.StudentService
 			return ServiceResponse<List<StudentDTO>>.Success(studentDTOs, 200);
 		}
 
+		
+		public async Task<ServiceResponse<List<StudentDTO>>> GetStudentsWithCourses(bool detailed)
+		{
+			List<Student> students = await studentRepository.GetStudentsWithCourses();
+
+			List<StudentDTO> studentDTOs = students.Select(student => GetStudentDTO(student, detailed)).ToList();
+
+			return ServiceResponse<List<StudentDTO>>.Success(studentDTOs, 200);
+		}
+
 		public async Task<ServiceResponse<StudentDTO>> GetStudentById(int id, bool detailed)
 		{
 			Student? student = await studentRepository.GetStudentById(id);

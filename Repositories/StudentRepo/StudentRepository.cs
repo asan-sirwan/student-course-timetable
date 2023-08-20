@@ -22,6 +22,16 @@ namespace student_course_timetable.Repositories.StudentRepo
 			return students;
 		}
 
+		public async Task<List<Student>> GetStudentsWithCourses()
+		{
+			List<Student> students = await context.Students
+				.Include(s => s.Courses)
+				.ThenInclude(c => c.Lecturer)
+				.Where(s => s.Courses.Any())
+				.ToListAsync();
+			return students;
+		}
+
 		public async Task<Student?> GetStudentById(int studentId)
 		{
 			Student? student = await context.Students

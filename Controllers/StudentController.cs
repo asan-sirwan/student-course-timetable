@@ -39,6 +39,29 @@ namespace student_course_timetable.Controllers
 			}
 		}
 
+		[HttpGet("with-courses")]
+		public async Task<ActionResult<ServiceResponse<List<StudentDTO>>>> GetStudentsWithCourses([FromQuery] bool detailed = false)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					BadRequest(ServiceResponse<StudentDTO>.Fail("Bad input", 400));
+				}
+
+				ServiceResponse<List<StudentDTO>> students = await studentService.GetStudentsWithCourses(detailed);
+				if (!students.IsSuccess)
+				{ return StatusCode(students.StatusCode, students); }
+
+				return Ok(students.Data);
+			}
+			catch (Exception)
+			{
+				var error = ServiceResponse<StudentDTO>.Fail("Something went wrong :(", 500);
+				return StatusCode(error.StatusCode, error);
+			}
+		}
+
 		[HttpGet("{id}")]
 		public async Task<ActionResult<ServiceResponse<StudentDTO>>> GetStudentById(int id, [FromQuery] bool detailed = false)
 		{
