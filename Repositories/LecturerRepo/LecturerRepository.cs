@@ -40,7 +40,17 @@ namespace student_course_timetable.Repositories.LecturerRepo
 
 		public async Task<bool> UpdateLecturer(Lecturer lecturer)
 		{
-			context.Lecturers.Update(lecturer);
+			var trackedLecturer = await context.Lecturers.FindAsync(lecturer.Id);
+			if (trackedLecturer == null)
+			{
+				return false;
+			}
+
+			trackedLecturer.Name = lecturer.Name;
+			trackedLecturer.Email = lecturer.Email;
+			trackedLecturer.Password = lecturer.Password;
+			trackedLecturer.BirthDate = lecturer.BirthDate; 
+			trackedLecturer.Degree = lecturer.Degree; 
 			int updated = await context.SaveChangesAsync();
 
 			return updated > 0;

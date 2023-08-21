@@ -71,7 +71,7 @@ namespace student_course_timetable.Controllers
 
 				ServiceResponse<CourseDTO> course = await courseService.UpdateCourse(updateCourse);
 				if (!course.IsSuccess)
-				{ return StatusCode(course.StatusCode, course); }
+				{ return StatusCode(course.StatusCode); }
 
 				return Ok(course.Data);
 			}

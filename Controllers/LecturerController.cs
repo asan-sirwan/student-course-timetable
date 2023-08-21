@@ -81,7 +81,7 @@ namespace student_course_timetable.Controllers
 
 				ServiceResponse<LecturerDTO> lecturer = await lecturerService.UpdateLecturer(updateLecturer);
 				if (!lecturer.IsSuccess)
-				{ return StatusCode(lecturer.StatusCode, lecturer); }
+				{ return StatusCode(lecturer.StatusCode); }
 
 				return Ok(lecturer.Data);
 			}

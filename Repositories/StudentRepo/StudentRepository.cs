@@ -52,7 +52,17 @@ namespace student_course_timetable.Repositories.StudentRepo
 
 		public async Task<bool> UpdateStudent(Student student)
 		{
-			context.Students.Update(student);
+			var trackedStudent = await context.Students.FindAsync(student.Id);
+			if (trackedStudent == null)
+			{
+				return false;
+			}
+
+			trackedStudent.Name = student.Name;
+			trackedStudent.Email = student.Email;
+			trackedStudent.Password = student.Password;
+			trackedStudent.BirthDate = student.BirthDate;
+			trackedStudent.Address = student.Address;
 			int updated = await context.SaveChangesAsync();
 
 			return updated > 0;

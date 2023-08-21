@@ -94,7 +94,7 @@ namespace student_course_timetable.Controllers
 
 				ServiceResponse<StudentDTO> student = await studentService.UpdateStudent(updateStudent);
 				if (!student.IsSuccess)
-				{ return StatusCode(student.StatusCode, student); }
+				{ return StatusCode(student.StatusCode); }
 
 				return Ok(student.Data);
 			}

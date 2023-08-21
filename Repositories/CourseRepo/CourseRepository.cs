@@ -42,9 +42,18 @@ namespace student_course_timetable.Repositories.CourseRepo
 
 		public async Task<bool> UpdateCourse(Course course)
 		{
-			context.Courses.Update(course);
-			int updated = await context.SaveChangesAsync();
+			var trackedCourse = await context.Courses.FindAsync(course.Id);
+			if (trackedCourse == null)
+			{
+				return false;
+			}
 
+			trackedCourse.Title = course.Title;
+			trackedCourse.Description = course.Description;
+			trackedCourse.CourseDateTime = course.CourseDateTime;
+			trackedCourse.Lecturer = course.Lecturer;
+
+			int updated = await context.SaveChangesAsync();
 			return updated > 0;
 		}
 
