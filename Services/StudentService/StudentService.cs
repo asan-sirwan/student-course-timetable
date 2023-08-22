@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using student_course_timetable.DTOs.CourseDTOs;
 using student_course_timetable.DTOs.StudentDTOs;
 using student_course_timetable.Models;
@@ -23,7 +26,7 @@ namespace student_course_timetable.Services.StudentService
 			return ServiceResponse<List<StudentDTO>>.Success(studentDTOs, 200);
 		}
 
-		
+
 		public async Task<ServiceResponse<List<StudentDTO>>> GetStudentsWithCourses(bool detailed)
 		{
 			List<Student> students = await studentRepository.GetStudentsWithCourses();
@@ -31,6 +34,30 @@ namespace student_course_timetable.Services.StudentService
 			List<StudentDTO> studentDTOs = students.Select(student => GetStudentDTO(student, detailed)).ToList();
 
 			return ServiceResponse<List<StudentDTO>>.Success(studentDTOs, 200);
+		}
+
+		public async Task<ServiceResponse<StudentDTO>> StudentLogin(StudentLoginDTO studentLoginDTO)
+		{
+			try
+			{
+				string email = studentLoginDTO.Email;
+				string password = studentLoginDTO.Password;
+				
+				Student? student = await studentRepository.StudentLogin(email, password);
+				if (student == null)
+				{
+					return ServiceResponse<StudentDTO>
+						.Fail("Email or Password is incorrect.", 400);
+				}
+
+				return ServiceResponse<StudentDTO>
+					.Success(GetStudentDTO(student, detailed: true), 200);
+			}
+			catch (Exception)
+			{
+				return ServiceResponse<StudentDTO>
+					.Fail("Something went wrong.", 500);
+			}
 		}
 
 		public async Task<ServiceResponse<StudentDTO>> GetStudentById(int id, bool detailed)

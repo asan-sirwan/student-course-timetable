@@ -22,6 +22,12 @@ builder.Services.AddCors(options =>
 			.AllowAnyHeader()
 			.AllowAnyMethod();
 	});
+	options.AddPolicy(name: "AllowFlutterApp", policy =>
+	{
+		policy.WithOrigins("http://localhost:56518")
+		.AllowAnyHeader()
+		.AllowAnyMethod();
+	});
 });
 
 builder.Services.AddControllers();
@@ -58,6 +64,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowReactApp");
+app.UseCors("AllowFlutterApp");
 
 app.UseAuthorization();
 

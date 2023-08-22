@@ -82,6 +82,16 @@ namespace student_course_timetable.Controllers
 			return CreatedAtAction(nameof(GetStudentById), new { id = student.Data!.Id }, student.Data);
 		}
 
+		[HttpPost("login")]
+		public async Task<ActionResult<ServiceResponse<StudentDTO>>> StudentLogin([FromBody] StudentLoginDTO studentLoginDTO)
+		{
+			ServiceResponse<StudentDTO> student = await studentService.StudentLogin(studentLoginDTO);
+			if (!student.IsSuccess)
+			{ return StatusCode(student.StatusCode, student); }
+
+			return Ok(student.Data);
+		}
+
 		[HttpPut]
 		public async Task<ActionResult<ServiceResponse<StudentDTO>>> UpdateStudent([FromBody] StudentUpdateDTO updateStudent)
 		{

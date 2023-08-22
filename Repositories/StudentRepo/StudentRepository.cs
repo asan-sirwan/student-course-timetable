@@ -32,6 +32,16 @@ namespace student_course_timetable.Repositories.StudentRepo
 			return students;
 		}
 
+		public async Task<Student?> StudentLogin(string email, string password)
+		{
+			Student? student = await context.Students
+				.Where(s => s.Email == email && s.Password == password)
+				.Include(s => s.Courses)
+				.ThenInclude(c => c.Lecturer)
+				.FirstOrDefaultAsync();
+			return student;
+		}
+
 		public async Task<Student?> GetStudentById(int studentId)
 		{
 			Student? student = await context.Students

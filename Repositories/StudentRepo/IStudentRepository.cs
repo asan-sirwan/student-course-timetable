@@ -6,6 +6,7 @@ namespace student_course_timetable.Repositories.StudentRepo
     {
         Task<List<Student>> GetStudents();
         Task<List<Student>> GetStudentsWithCourses();
+        Task<Student?> StudentLogin(string email, string password);
 		Task<Student?> GetStudentById(int studentId);
 		Task<bool> AddStudent(Student student);
 		Task<bool> UpdateStudent(Student student);
