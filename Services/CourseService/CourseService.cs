@@ -72,30 +72,30 @@ namespace student_course_timetable.Services.CourseService
 		{
 			try
 			{
-			Lecturer? courseLecturer = await lecturerRepository.GetLecturerById(courseUpdateDTO.LecturerId);
-			if (courseLecturer == null)
-			{
-				return ServiceResponse<CourseDTO>
-					.Fail($"Lecturer with id {courseUpdateDTO.LecturerId} wasn't found.", 404);
-			}
+				Lecturer? courseLecturer = await lecturerRepository.GetLecturerById(courseUpdateDTO.LecturerId);
+				if (courseLecturer == null)
+				{
+					return ServiceResponse<CourseDTO>
+						.Fail($"Lecturer with id {courseUpdateDTO.LecturerId} wasn't found.", 404);
+				}
 
-			Course updateCourse = new()
-			{
-				Id = courseUpdateDTO.Id,
-				Title = courseUpdateDTO.Title,
-				Description = courseUpdateDTO.Description,
-				CourseDateTime = courseUpdateDTO.CourseDateTime,
-				Lecturer = courseLecturer
-			};
+				Course updateCourse = new()
+				{
+					Id = courseUpdateDTO.Id,
+					Title = courseUpdateDTO.Title,
+					Description = courseUpdateDTO.Description,
+					CourseDateTime = courseUpdateDTO.CourseDateTime,
+					Lecturer = courseLecturer
+				};
 
-			bool updated = await courseRepository.UpdateCourse(updateCourse);
-			if (!updated)
-			{
-				return ServiceResponse<CourseDTO>
-					   .Fail("Failed to update course.", 500);
-			}
+				bool updated = await courseRepository.UpdateCourse(updateCourse);
+				if (!updated)
+				{
+					return ServiceResponse<CourseDTO>
+						   .Fail("Failed to update course.", 500);
+				}
 
-			return ServiceResponse<CourseDTO>.Success(GetCourseDTO(updateCourse), 200);
+				return ServiceResponse<CourseDTO>.Success(GetCourseDTO(updateCourse), 200);
 			}
 			catch (Exception)
 			{

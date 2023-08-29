@@ -12,6 +12,7 @@ namespace student_course_timetable.Data
 		public DbSet<Lecturer> Lecturers { get; set; }
 		public DbSet<Course> Courses { get; set; }
 		public DbSet<StudentCourse> StudentCourses { get; set; }
+		public DbSet<Attachment> Attachments { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -19,6 +20,12 @@ namespace student_course_timetable.Data
 				.HasMany(e => e.Courses)
 				.WithOne(e => e.Lecturer)
 				.HasForeignKey("LecturerId")
+				.IsRequired();
+
+			modelBuilder.Entity<Course>()
+				.HasMany(e => e.Attachments)
+				.WithOne(e => e.Course)
+				.HasForeignKey("CourseId")
 				.IsRequired();
 
 			modelBuilder.Entity<Student>()

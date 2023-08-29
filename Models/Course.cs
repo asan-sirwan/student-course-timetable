@@ -22,5 +22,7 @@ namespace student_course_timetable.Models
 		public required Lecturer Lecturer { get; set; }
 		
 		public List<Student> Students { get; } = new();
+
+		public List<Attachment> Attachments { get; } = new();
     }
 }
